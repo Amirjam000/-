@@ -35,32 +35,13 @@ jobs:
 
     - name: Build Debug APK
       run: |
-        gradle assembleDebug --stacktrace 2>&1 | tee gradle_build_log.txt
-
-    - name: Upload Build Log on Failure
-      if: failure()
-      uses: actions/upload-artifact@v4
-      with:
-        name: Gradle-Build-Log
-        path: gradle_build_log.txt
+        gradle :app:assembleDebug --stacktrace
+        echo "=== لیست تمام فایلهای APK تولید شده ==="
+        find . -name "*.apk"
 
     - name: Upload Debug APK
-      if: success()
       uses: actions/upload-artifact@v4
       with:
-        name: MeshConnect-Debug-APK
-        path: app/build/outputs/apk/debug/*.apk
-        retention-days: 14
-
-    - name: Build Release APK
-      if: success()
-      run: |
-        gradle assembleRelease --stacktrace || true
-
-    - name: Upload Release APK
-      if: success()
-      uses: actions/upload-artifact@v4
-      with:
-        name: MeshConnect-Release-APK
-        path: app/build/outputs/apk/release/*.apk
+        name: MeshConnect-APK
+        path: '**/*.apk'
         retention-days: 14
