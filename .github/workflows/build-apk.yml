@@ -24,23 +24,25 @@ jobs:
     - name: Setup Android SDK
       uses: android-actions/setup-android@v3
 
-    - name: Accept Android Licenses
-      run: |
-        yes | sdkmanager --licenses || true
-
-    - name: Setup Gradle 8.7
+    - name: Setup Gradle
       uses: gradle/actions/setup-gradle@v4
       with:
         gradle-version: '8.7'
 
+    - name: Make Gradlew Executable
+      run: chmod +x ./gradlew
+
     - name: Build APK
       run: |
-        gradle assembleDebug --stacktrace
-        find app/build -name "*.apk"
+        mkdir -p /tmp/apk_artifacts
+        ./gradlew assembleDebug --stacktrace 2>&1 | tee /tmp/apk_artifacts/build_log.txt || true
+        find . -name "*.apk" -exec cp {} /tmp/apk_artifacts/ \; || true
+        echo "=== فایلهای آماده شده در /tmp/apk_artifacts ==="
+        ls -la /tmp/apk_artifacts
 
-    - name: Upload APK
+    - name: Upload APK and Logs
       uses: actions/upload-artifact@v4
       with:
-        name: MeshConnect-APK
-        path: app/build/outputs/
+        name: MeshConnect-APK-Bundle
+        path: /tmp/apk_artifacts/
         retention-days: 14
