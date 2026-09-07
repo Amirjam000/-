@@ -5,7 +5,7 @@ on:
     branches: [ "main", "master" ]
   pull_request:
     branches: [ "main", "master" ]
-  workflow_dispatch: # امکان اجرای دستی با یک کلیک در گیت‌هاب
+  workflow_dispatch:
 
 jobs:
   build:
@@ -20,16 +20,17 @@ jobs:
       with:
         java-version: '17'
         distribution: 'temurin'
-        cache: gradle
 
     - name: Setup Android SDK
       uses: android-actions/setup-android@v3
 
-    - name: Grant Execute Permission for Gradlew
-      run: chmod +x ./gradlew || true
+    - name: Setup Gradle
+      uses: gradle/actions/setup-gradle@v4
+      with:
+        gradle-version: '8.7'
 
     - name: Build Debug APK
-      run: ./gradlew assembleDebug --stacktrace
+      run: gradle assembleDebug --stacktrace
 
     - name: Upload Debug APK
       uses: actions/upload-artifact@v4
@@ -39,7 +40,7 @@ jobs:
         retention-days: 14
 
     - name: Build Release APK
-      run: ./gradlew assembleRelease --stacktrace || true
+      run: gradle assembleRelease --stacktrace || true
 
     - name: Upload Release APK
       uses: actions/upload-artifact@v4
