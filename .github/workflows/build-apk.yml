@@ -31,7 +31,11 @@ jobs:
 
     - name: Build APK with Gradlew
       run: |
-        ./gradlew assembleDebug --stacktrace
+        ./gradlew assembleDebug --stacktrace 2>&1 | tee /tmp/build_err.txt || {
+          ERR=$(tail -n 30 /tmp/build_err.txt | tr '\n' ' ')
+          echo "::error::$ERR"
+          exit 1
+        }
         echo "=== فایلهای خروجی APK ==="
         ls -la app/build/outputs/apk/debug/
 
