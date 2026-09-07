@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">MeshConnect</string>
+    <string name="discovery_title">کشف و اتصال دستگاه‌ها</string>
+    <string name="chat_list_title">گفتگوها</string>
+    <string name="video_call_title">تماس تصویری</string>
+    <string name="advertising_active">در حال انتشار نام (Advertising)...</string>
+    <string name="discovery_active">در حال جستجوی همتاها (Discovery)...</string>
+    <string name="ptt_hold_to_talk">نگهدارید و صحبت کنید (PTT)</string>
+    <string name="ptt_transmitting">در حال ارسال صدا به همتاها...</string>
+    <string name="ptt_receiving">در حال پخش صدای دریافتی...</string>
+</resources>
