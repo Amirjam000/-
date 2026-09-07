@@ -24,15 +24,17 @@ jobs:
     - name: Setup Android SDK
       uses: android-actions/setup-android@v3
 
-    - name: Setup Gradle
+    - name: Setup Gradle 8.7
       uses: gradle/actions/setup-gradle@v4
       with:
         gradle-version: '8.7'
 
     - name: Build Debug APK
-      run: gradle assembleDebug --stacktrace
+      run: |
+        gradle assembleDebug --stacktrace --warning-mode all
 
     - name: Upload Debug APK
+      if: success()
       uses: actions/upload-artifact@v4
       with:
         name: MeshConnect-Debug-APK
@@ -40,9 +42,12 @@ jobs:
         retention-days: 14
 
     - name: Build Release APK
-      run: gradle assembleRelease --stacktrace || true
+      if: success()
+      run: |
+        gradle assembleRelease --stacktrace || true
 
     - name: Upload Release APK
+      if: success()
       uses: actions/upload-artifact@v4
       with:
         name: MeshConnect-Release-APK

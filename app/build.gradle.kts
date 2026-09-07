@@ -2,8 +2,6 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("org.jetbrains.kotlin.plugin.compose")
-    // پلاگین فایربیس (در صورت اضافه کردن فایل google-services.json فعال می‌شود)
-    id("com.google.gms.google-services") apply false
 }
 
 android {
@@ -12,7 +10,6 @@ android {
 
     defaultConfig {
         applicationId = "com.meshconnect.app"
-        // سازگاری از اندروید ۷.۰ (API 24) تا جدیدترین نسخه‌های اندروید (API 35)
         minSdk = 24
         targetSdk = 35
         versionCode = 1
@@ -23,7 +20,6 @@ android {
             useSupportLibrary = true
         }
 
-        // پشتیبانی از معماری‌های مختلف سخت‌افزاری پردازنده‌ها (شامل گوشی‌های قدیمی و ۶۴ بیتی جدید)
         ndk {
             abiFilters.addAll(setOf("armeabi-v7a", "arm64-v8a", "x86", "x86_64"))
         }
@@ -31,13 +27,11 @@ android {
 
     buildTypes {
         release {
-            isMinifyEnabled = true
-            isShrinkResources = true
+            isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
-            signingConfig = signingConfigs.getByName("debug")
         }
         debug {
             isMinifyEnabled = false
@@ -108,10 +102,10 @@ dependencies {
     // Accompanist Permissions (مدیریت استاندارد دسترسی‌ها در Compose)
     implementation("com.google.accompanist:accompanist-permissions:0.36.0")
 
-    // Gson برای سریالایز و دیسریالایز بسته‌های مش (Mesh Packet)
+    // Gson برای بسته‌های مش
     implementation("com.google.code.gson:gson:2.11.0")
 
-    // Coil برای بارگذاری و کش تصاویر در چت
+    // Coil برای تصاویر
     implementation("io.coil-kt:coil-compose:2.7.0")
 
     // Debug & Test
