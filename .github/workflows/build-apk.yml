@@ -24,6 +24,10 @@ jobs:
     - name: Setup Android SDK
       uses: android-actions/setup-android@v3
 
+    - name: Accept Android Licenses
+      run: |
+        yes | sdkmanager --licenses || true
+
     - name: Setup Gradle 8.7
       uses: gradle/actions/setup-gradle@v4
       with:
@@ -31,7 +35,14 @@ jobs:
 
     - name: Build Debug APK
       run: |
-        gradle assembleDebug --stacktrace --warning-mode all
+        gradle assembleDebug --stacktrace 2>&1 | tee gradle_build_log.txt
+
+    - name: Upload Build Log on Failure
+      if: failure()
+      uses: actions/upload-artifact@v4
+      with:
+        name: Gradle-Build-Log
+        path: gradle_build_log.txt
 
     - name: Upload Debug APK
       if: success()
